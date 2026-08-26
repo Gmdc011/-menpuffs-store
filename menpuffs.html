@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MenPuffs — Vitrine (Demo de Portfólio)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0c0e10;
+    --bg-soft: #14171a;
+    --panel: #1b1f23;
+    --line: #2a2f34;
+    --ink: #eef1f0;
+    --ink-dim: #9aa3a0;
+    --mint: #5CFFC0;
+    --mint-dim: #2e9a76;
+    --ember: #ff7a45;
+    --radius: 10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+  }
+  a{color:inherit;}
+
+  /* ---------- top notice ---------- */
+  .notice{
+    background:#241a12;
+    color:#ffcfa8;
+    font-size:12.5px;
+    text-align:center;
+    padding:8px 16px;
+    border-bottom:1px solid #3a2a19;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 5vw;
+    background:rgba(12,14,16,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .logo{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:800;
+    font-size:26px;
+    letter-spacing:0.01em;
+  }
+  .logo span{color:var(--mint);}
+  nav{display:flex; gap:28px; font-size:14px; color:var(--ink-dim);}
+  nav a{text-decoration:none; transition:color .2s;}
+  nav a:hover{color:var(--ink);}
+  .cart-btn{
+    display:flex; align-items:center; gap:8px;
+    background:var(--panel); border:1px solid var(--line);
+    padding:9px 16px; border-radius:999px; cursor:pointer;
+    font-size:13.5px; color:var(--ink);
+  }
+  .cart-btn:hover{border-color:var(--mint);}
+  #cart-count{
+    background:var(--mint); color:#06110c; font-weight:700;
+    border-radius:999px; min-width:20px; height:20px;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:11.5px; padding:0 5px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:110px 5vw 90px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .cloud{
+    position:absolute; border-radius:50%;
+    filter:blur(60px); opacity:0.35; pointer-events:none;
+  }
+  .c1{width:480px;height:480px; background:radial-gradient(circle, var(--mint), transparent 70%); top:-220px; left:-100px; animation:drift 18s ease-in-out infinite;}
+  .c2{width:380px;height:380px; background:radial-gradient(circle, #3d6b5c, transparent 70%); bottom:-180px; right:5%; animation:drift 22s ease-in-out infinite reverse;}
+  @keyframes drift{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(30px,-20px) scale(1.08);}
+  }
+  @media (prefers-reduced-motion: reduce){ .cloud{animation:none;} }
+
+  .hero-inner{position:relative; z-index:2; max-width:640px;}
+  .eyebrow{
+    font-size:12.5px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--mint); margin-bottom:18px; display:block;
+  }
+  .hero h1{
+    font-size:clamp(48px, 7vw, 88px);
+    line-height:0.95; margin:0 0 22px;
+  }
+  .hero p{
+    font-size:16.5px; color:var(--ink-dim); line-height:1.6; max-width:480px;
+    font-family:'Inter',sans-serif; text-transform:none; letter-spacing:0;
+  }
+  .hero-actions{margin-top:34px; display:flex; gap:14px;}
+  .btn{
+    padding:14px 26px; border-radius:999px; font-size:14px; font-weight:600;
+    cursor:pointer; border:1px solid transparent; text-decoration:none;
+    display:inline-block;
+  }
+  .btn-primary{background:var(--mint); color:#06110c;}
+  .btn-primary:hover{background:#7dffce;}
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink-dim);}
+
+  /* ---------- filters ---------- */
+  .filters{
+    display:flex; gap:10px; flex-wrap:wrap;
+    padding:36px 5vw 0;
+  }
+  .chip{
+    padding:9px 18px; border-radius:999px; border:1px solid var(--line);
+    background:var(--panel); color:var(--ink-dim); font-size:13.5px;
+    cursor:pointer; transition:all .15s;
+  }
+  .chip:hover{color:var(--ink);}
+  .chip.active{background:var(--mint); color:#06110c; border-color:var(--mint); font-weight:600;}
+
+  /* ---------- product grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px,1fr));
+    gap:20px;
+    padding:26px 5vw 90px;
+  }
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px; display:flex; flex-direction:column; gap:12px;
+    transition:transform .18s, border-color .18s;
+  }
+  .card:hover{transform:translateY(-3px); border-color:var(--mint-dim);}
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start;}
+  .brand-tag{
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--mint); font-weight:600;
+  }
+  .puffs{font-size:11px; color:var(--ink-dim);}
+  .swatch{
+    width:100%; height:110px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Barlow Condensed',sans-serif; font-size:15px;
+    letter-spacing:0.03em; text-transform:uppercase; color:rgba(255,255,255,0.85);
+  }
+  .card h3{font-size:22px; margin:0; letter-spacing:0;}
+  .flavor-note{font-size:12.5px; color:var(--ink-dim); line-height:1.5; text-transform:none; letter-spacing:0; margin:0;}
+  .card-bottom{display:flex; justify-content:space-between; align-items:center; margin-top:auto;}
+  .price{font-size:19px; font-weight:700; font-family:'Barlow Condensed',sans-serif;}
+  .add-btn{
+    background:transparent; border:1px solid var(--mint); color:var(--mint);
+    padding:8px 16px; border-radius:999px; font-size:13px; cursor:pointer;
+    font-weight:600;
+  }
+  .add-btn:hover{background:var(--mint); color:#06110c;}
+
+  /* ---------- cart drawer ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,0.55);
+    opacity:0; pointer-events:none; transition:opacity .25s; z-index:90;
+  }
+  .overlay.open{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed; top:0; right:-420px; width:380px; max-width:90vw; height:100%;
+    background:var(--bg-soft); border-left:1px solid var(--line);
+    z-index:100; transition:right .3s ease; display:flex; flex-direction:column;
+  }
+  .drawer.open{right:0;}
+  .drawer-head{
+    padding:22px 22px 16px; border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .drawer-head h2{font-size:22px; margin:0;}
+  .close-btn{background:none; border:none; color:var(--ink-dim); font-size:22px; cursor:pointer;}
+  #cart-items{flex:1; overflow-y:auto; padding:16px 22px; display:flex; flex-direction:column; gap:14px;}
+  .cart-row{display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:14px;}
+  .cart-row .name{font-weight:600;}
+  .cart-row .meta{color:var(--ink-dim); font-size:12px;}
+  .qty-controls{display:flex; align-items:center; gap:8px;}
+  .qty-controls button{
+    width:24px; height:24px; border-radius:6px; border:1px solid var(--line);
+    background:var(--panel); color:var(--ink); cursor:pointer;
+  }
+  .drawer-foot{padding:20px 22px; border-top:1px solid var(--line);}
+  .total-row{display:flex; justify-content:space-between; font-size:16px; margin-bottom:16px;}
+  .total-row strong{font-family:'Barlow Condensed',sans-serif; font-size:20px;}
+  .empty-msg{color:var(--ink-dim); font-size:14px; text-align:center; margin-top:40px;}
+
+  footer{
+    padding:36px 5vw; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    color:var(--ink-dim); font-size:12.5px;
+  }
+  :focus-visible{outline:2px solid var(--mint); outline-offset:2px;}
+
+  @media (max-width:640px){
+    header{padding:16px 20px;}
+    nav{display:none;}
+    .hero{padding:70px 20px 60px;}
+    .filters{padding:28px 20px 0;}
+    .grid{padding:20px 20px 70px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="notice">Projeto de demonstração para portfólio — catálogo, preços e fornecedores são fictícios, sem funcionalidade de venda real.</div>
+
+<header>
+  <div class="logo">MEN<span>PUFFS</span></div>
+  <nav>
+    <a href="#catalogo">Catálogo</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#contato">Contato</a>
+  </nav>
+  <button class="cart-btn" onclick="toggleCart(true)">
+    Carrinho <span id="cart-count">0</span>
+  </button>
+</header>
+
+<section class="hero">
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="hero-inner">
+    <span class="eyebrow">Catálogo demo · não comercial</span>
+    <h1>Nuvens sob controle.</h1>
+    <p>MenPuffs é uma vitrine conceito construída para portfólio: layout, carrinho interativo e catálogo filtrável — tudo em HTML, CSS e JavaScript puro, sem frameworks.</p>
+    <div class="hero-actions">
+      <a href="#catalogo" class="btn btn-primary">Ver catálogo</a>
+      <a href="#sobre" class="btn btn-ghost">Sobre o projeto</a>
+    </div>
+  </div>
+</section>
+
+<div class="filters" id="catalogo">
+  <button class="chip active" data-brand="all">Todas as marcas</button>
+  <button class="chip" data-brand="Ignite">Ignite</button>
+  <button class="chip" data-brand="Elf Bar">Elf Bar</button>
+  <button class="chip" data-brand="Lost Mary">Lost Mary</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<section id="sobre" style="padding:0 5vw 80px; max-width:640px;">
+  <h2 style="font-size:30px; margin-bottom:14px;">Sobre este projeto</h2>
+  <p style="color:var(--ink-dim); font-size:15px; line-height:1.7; text-transform:none;">
+    Construído como peça de portfólio para demonstrar front-end puro: grid responsivo, filtro de categorias,
+    carrinho lateral com estado em memória (sem localStorage) e um sistema de design com tokens de cor e tipografia
+    próprios. Todos os dados de produto são fictícios.
+  </p>
+</section>
+
+<footer id="contato">
+  <div>© 2026 MenPuffs — Projeto de portfólio</div>
+  <div>Feito com HTML, CSS e JavaScript</div>
+</footer>
+
+<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h2>Seu carrinho</h2>
+    <button class="close-btn" onclick="toggleCart(false)">×</button>
+  </div>
+  <div id="cart-items"></div>
+  <div class="drawer-foot">
+    <div class="total-row"><span>Total</span><strong id="cart-total">R$ 0,00</strong></div>
+    <button class="btn btn-primary" style="width:100%; border:none;" onclick="alert('Demo de portfólio — sem checkout real.')">Finalizar (demo)</button>
+  </div>
+</div>
+
+<script>
+  const products = [
+    {id:1, brand:"Ignite", name:"Ignite Blaze 5K", flavor:"Manga com gelo", puffs:"5.000 puffs", price:59.90, color:"#e05b2c"},
+    {id:2, brand:"Ignite", name:"Ignite Frost 5K", flavor:"Menta glacial", puffs:"5.000 puffs", price:59.90, color:"#2c78a8"},
+    {id:3, brand:"Ignite", name:"Ignite Berry Rush", flavor:"Frutas vermelhas", puffs:"4.000 puffs", price:54.90, color:"#8a2c5e"},
+    {id:4, brand:"Elf Bar", name:"Elf Bar BC5000", flavor:"Melancia gelada", puffs:"5.000 puffs", price:64.90, color:"#3c9a5f"},
+    {id:5, brand:"Elf Bar", name:"Elf Bar Cool Mint", flavor:"Menta forte", puffs:"5.000 puffs", price:64.90, color:"#1f8a8a"},
+    {id:6, brand:"Elf Bar", name:"Elf Bar Tropic Mix", flavor:"Mix tropical", puffs:"4.500 puffs", price:59.90, color:"#c47a1e"},
+    {id:7, brand:"Lost Mary", name:"Lost Mary OS5000", flavor:"Uva gelada", puffs:"5.000 puffs", price:62.90, color:"#5b3ca8"},
+    {id:8, brand:"Lost Mary", name:"Lost Mary Peach Ice", flavor:"Pêssego com gelo", puffs:"5.000 puffs", price:62.90, color:"#c4527a"},
+    {id:9, brand:"Lost Mary", name:"Lost Mary Cola Rush", flavor:"Cola gelada", puffs:"4.000 puffs", price:57.90, color:"#4a4a2c"},
+  ];
+
+  let activeBrand = "all";
+  let cart = {}; // id -> qty
+
+  function money(v){
+    return v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+  }
+
+  function renderGrid(){
+    const grid = document.getElementById('grid');
+    grid.innerHTML = "";
+    const list = products.filter(p => activeBrand === "all" || p.brand === activeBrand);
+    list.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-top">
+          <span class="brand-tag">${p.brand}</span>
+          <span class="puffs">${p.puffs}</span>
+        </div>
+        <div class="swatch" style="background:${p.color}22; border:1px solid ${p.color}55; color:${p.color};">${p.flavor}</div>
+        <h3>${p.name}</h3>
+        <p class="flavor-note">Sabor: ${p.flavor}</p>
+        <div class="card-bottom">
+          <span class="price">${money(p.price)}</span>
+          <button class="add-btn" onclick="addToCart(${p.id})">Adicionar</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function addToCart(id){
+    cart[id] = (cart[id] || 0) + 1;
+    renderCart();
+    toggleCart(true);
+  }
+
+  function changeQty(id, delta){
+    cart[id] = (cart[id] || 0) + delta;
+    if(cart[id] <= 0) delete cart[id];
+    renderCart();
+  }
+
+  function renderCart(){
+    const itemsEl = document.getElementById('cart-items');
+    const ids = Object.keys(cart);
+    let total = 0;
+    let count = 0;
+
+    if(ids.length === 0){
+      itemsEl.innerHTML = '<p class="empty-msg">Seu carrinho está vazio.</p>';
+    } else {
+      itemsEl.innerHTML = "";
+      ids.forEach(id => {
+        const p = products.find(x => x.id == id);
+        const qty = cart[id];
+        total += p.price * qty;
+        count += qty;
+        const row = document.createElement('div');
+        row.className = 'cart-row';
+        row.innerHTML = `
+          <div>
+            <div class="name">${p.name}</div>
+            <div class="meta">${money(p.price)} cada</div>
+          </div>
+          <div class="qty-controls">
+            <button onclick="changeQty(${id}, -1)">−</button>
+            <span>${qty}</span>
+            <button onclick="changeQty(${id}, 1)">+</button>
+          </div>
+        `;
+        itemsEl.appendChild(row);
+      });
+    }
+    document.getElementById('cart-total').textContent = money(total);
+    document.getElementById('cart-count').textContent = count;
+  }
+
+  function toggleCart(open){
+    document.getElementById('drawer').classList.toggle('open', open);
+    document.getElementById('overlay').classList.toggle('open', open);
+  }
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeBrand = chip.dataset.brand;
+      renderGrid();
+    });
+  });
+
+  renderGrid();
+  renderCart();
+</script>
+
+</body>
+</html>
